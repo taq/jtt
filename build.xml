@@ -30,4 +30,12 @@
          <classpath refid="classpath"/>
 		</java>
 	</target>
+
+	<target name="jtest" depends="build">
+		<junit>
+			<classpath refid="classpath"/>
+			<formatter type="brief" usefile="false"/>
+			<test name="com.eustaquiorangel.jtabletest.SimpleJunitTest"/>
+		</junit>
+	</target>
 </project>
