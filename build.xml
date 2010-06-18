@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<project name="JTableTest" default="build" basedir=".">
+	<property name="verbose" value="false"/>
+	<property name="dst"	 location="classes"/>
+	<property name="distfile" value="jtabletest.jar"/>
+
+   <path id="classpath.test">
+      <pathelement location="yaml.jar"/>
+      <pathelement location="sqlite.jar"/>
+      <pathelement location="classes"/>
+   </path>
+
+	<target name="build">
+		<javac srcdir="." verbose="${verbose}" destdir="${dst}" includes="*.java">
+         <classpath refid="classpath.test"/>
+			<compilerarg value="-Xlint:unchecked"/>
+      </javac>
+	</target>
+
+	<target name="dist" depends="build">
+		<delete file="${distfile}"/>
+		<jar destfile="${distfile}">
+         <fileset dir="classes" includes="*/**"/>
+		</jar>
+	</target>
+
+	<target name="test" depends="build">
+		<java classname="com.eustaquiorangel.jtabletest.SimpleTest">
+         <classpath refid="classpath.test"/>
+		</java>
+	</target>
+</project>
