@@ -4,15 +4,16 @@
 	<property name="dst"	 location="classes"/>
 	<property name="distfile" value="jtabletest.jar"/>
 
-   <path id="classpath.test">
+   <path id="classpath">
       <pathelement location="jyaml.jar"/>
       <pathelement location="sqlite.jar"/>
       <pathelement location="classes"/>
+		<pathelement path="${java.class.path}"/>
    </path>
 
 	<target name="build">
 		<javac srcdir="." verbose="${verbose}" destdir="${dst}" includes="*.java">
-         <classpath refid="classpath.test"/>
+         <classpath refid="classpath"/>
 			<compilerarg value="-Xlint:unchecked"/>
       </javac>
 	</target>
@@ -26,7 +27,7 @@
 
 	<target name="test" depends="build">
 		<java classname="com.eustaquiorangel.jtabletest.SimpleTest">
-         <classpath refid="classpath.test"/>
+         <classpath refid="classpath"/>
 		</java>
 	</target>
 </project>
