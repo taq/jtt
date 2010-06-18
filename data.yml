@@ -1,0 +1,5 @@
+sqlite:
+   username: "jtt"
+   password: "jtt"
+   url: "jdbc:sqlite:jtt.db"
+   driver: "org.sqlite.JDBC"

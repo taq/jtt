@@ -28,8 +28,13 @@ public class Query {
       return this;
    }
 
+   public Query order(String order){
+      this.order = order;
+      return this;
+   }
+
    private String createQuery(){
-      String sql = "select count(*) as jtabletestcount, a.* from "+this.table+" a ";
+      String sql = "select * from "+this.table+" a ";
       if(where!=null)
          sql = sql + " where "+where;
       if(order!=null)
@@ -39,16 +44,23 @@ public class Query {
       return sql;
    }
 
+	private String createCount(){
+		return createQuery().replace("*","count(*) as count");
+	}
+
    private boolean execute(){
       try {
          Connection con = this.test.getConnection();
          String sql     = createQuery();
+			String csql		= createCount();
 			String cname	= null;
+			int ccnt			= -1;
          stmt				= con.createStatement();
 
+			// get data
          rst	= stmt.executeQuery(sql);
 			meta	= rst.getMetaData();
-			count	= meta.getColumnCount();
+			ccnt	= meta.getColumnCount();
 
          if(!rst.next()){
 				stmt.close();
@@ -57,11 +69,24 @@ public class Query {
 			}
 			data = new HashMap<String,Object>();
 
-         count = rst.getInt("jtabletestcount");
-			for(int i=0; i<count; i++){
+			for(int i=0; i<ccnt; i++){
 				cname = meta.getColumnName(i+1);
 				data.put(cname,rst.getObject(cname));
 			}
+			rst.close();
+
+			// get the count - hey, cheaper and better than iteract on 
+			// non-scrollable resultsets!
+			rst = stmt.executeQuery(csql);
+			if(!rst.next()){
+				stmt.close();
+				rst.close();
+				return false;
+			}
+			count = rst.getInt("count");
+
+			stmt.close();
+			rst.close();
          executed = true; 
       } catch(Exception e) {
          executed = false;

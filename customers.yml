@@ -1,0 +1,15 @@
+john:
+   id: 1
+   name: John Lennon
+
+paul:
+   id: 2
+   name: Paul McCartney
+
+george:
+   id: 3
+   name: George Harrison
+
+ringo:
+   id: 4
+   name: Ringo Starr
