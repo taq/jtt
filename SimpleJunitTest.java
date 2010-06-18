@@ -14,8 +14,8 @@ public class SimpleJunitTest extends TestCase {
 
 		// test fixture
 		Map customers = jt.fixture("customers.yml");
-		String beatle = "john";
-		Map john = (Map) customers.get(beatle);
+		Map john		= (Map) customers.get("john");
+		Map george	= (Map) customers.get("george");
 		assertEquals(john.get("name"),"John Lennon");
 
 		// test row count
@@ -25,10 +25,12 @@ public class SimpleJunitTest extends TestCase {
 		// test row count with conditions
 		query = jt.table("customers").where("name like '%n'");
 		assertTrue(query.count()==2);
+		assertEquals(query.column("name"),george.get("name"));
 
 		// test row count with conditions and order
 		query = jt.table("customers").where("name like '%n'").order("name desc");
-		assertEquals(john.get("name"),john.get("name"));
+		assertTrue(query.count()==2);
+		assertEquals(query.column("name"),john.get("name"));
 	}
 }
 
