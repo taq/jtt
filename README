@@ -1,0 +1,13 @@
+Java Table Test
+---------------
+
+These are some classes to help testing Java programs using fixtures and 
+assertions. It's *based* - read that? - on the way we use fixtures and
+assertions on Ruby on Rails. The fixtures and database configuration file
+are YAML based and require the use of JYAML libraries 
+(http://jyaml.sourceforge.net).
+
+The examples uses SQLite (http://www.sqlite.org) and the SqliteJDBC 
+libraries (http://www.zentus.com/sqlitejdbc).
+
+For usage please see the wiki: http://wiki.github.com/taq/jtt
