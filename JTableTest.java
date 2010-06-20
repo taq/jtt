@@ -11,7 +11,7 @@ public class JTableTest {
    private String id;
    private Map con_info;
    private Map data;
-   private ArrayList<String> fieldList = new ArrayList<String>();
+   private ArrayList<String> fieldList;
 
    public JTableTest(String cfg, String id) throws Exception {
       con = open(cfg,id);
@@ -74,6 +74,7 @@ public class JTableTest {
       String sql     = "insert into "+table+" (";
       try {
          Iterator field_it = row_val.entrySet().iterator();
+			fieldList = new ArrayList<String>();
 
          while(field_it.hasNext()){
             Map.Entry field_entry = (Map.Entry) field_it.next();
@@ -98,7 +99,12 @@ public class JTableTest {
       return rtn;
    }
 
-   public Map fixture(String file) {
+	public Map fixture(String file) {
+		String[] ids = {};
+		return fixture(file,ids);
+	}
+
+   public Map fixture(String file, String ... ids) {
       PreparedStatement stmt = null;
       String sql = null, table = null;
 
@@ -114,6 +120,8 @@ public class JTableTest {
       String[] tokens;
       boolean first = true;
       int count, row_count;
+
+		Arrays.sort(ids);
 
       try {
          File f = new File(file);
@@ -148,6 +156,9 @@ public class JTableTest {
                   throw new Exception("could not create SQL insert for "+file);
                stmt = con.prepareStatement(sql);
             }
+				
+				if(ids.length>0 && Arrays.binarySearch(ids,row_key)<0)
+					continue;
 
             count = 1;
             data_it = fieldList.iterator();

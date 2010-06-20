@@ -24,6 +24,12 @@ public class SimpleTest {
 
 		query = jt.table("customers").where("name like '%n'").order("name desc");
 		System.out.println("but if we order descending the database the first is "+query.column("name"));
+
+		// loading just some keys from the fixture file
+		jt.clean("customers");
+		customers = jt.fixture("customers.yml","john","paul");
+		query = jt.table("customers");
+		System.out.println("there are "+query.count()+" selected Beatles");
 	}
 
 	public static void main(String args[]){

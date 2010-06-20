@@ -31,6 +31,11 @@ public class SimpleJunitTest extends TestCase {
 		query = jt.table("customers").where("name like '%n'").order("name desc");
 		assertTrue(query.count()==2);
 		assertEquals(query.column("name"),john.get("name"));
+
+		// test row count with some selected values from fixture
+		jt.clean("customers");
+		customers = jt.fixture("customers.yml","john","paul");
+		assertTrue(query.count()==2);
 	}
 }
 
