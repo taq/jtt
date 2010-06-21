@@ -10,6 +10,7 @@ public class SimpleJunitTest extends TestCase {
 		JTableTest jt = new JTableTest("data.yml","sqlite");
 		Query query;
 
+		jt.fixture_filter(this,"filter");
 		jt.clean("customers");
 
 		// test fixture
@@ -36,6 +37,12 @@ public class SimpleJunitTest extends TestCase {
 		jt.clean("customers");
 		customers = jt.fixture("customers.yml","john","paul");
 		assertTrue(query.count()==2);
+	}
+
+	public Object filter(Object msg){
+		if(msg.equals("<%= today %>"))
+			return Calendar.getInstance().getTime().toString();
+		return msg;
 	}
 }
 

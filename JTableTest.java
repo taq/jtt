@@ -3,6 +3,7 @@ package com.eustaquiorangel.jtabletest;
 import java.io.*;
 import java.util.*;
 import java.sql.*;
+import java.lang.reflect.Method;
 import org.ho.yaml.*;
 
 public class JTableTest {
@@ -12,6 +13,8 @@ public class JTableTest {
    private Map con_info;
    private Map data;
    private ArrayList<String> fieldList;
+	private Object fixture_filter_obj	= null;
+	private String fixture_filter_meth	= null;
 
    public JTableTest(String cfg, String id) throws Exception {
       con = open(cfg,id);
@@ -99,12 +102,18 @@ public class JTableTest {
       return rtn;
    }
 
-	public Map fixture(String file) {
+	public void fixture_filter(Object o, String m){
+		fixture_filter_obj	= o;
+		fixture_filter_meth	= m;
+	}
+
+	public Map fixture(String file) throws Exception {
 		String[] ids = {};
 		return fixture(file,ids);
 	}
 
-   public Map fixture(String file, String ... ids) {
+	@SuppressWarnings("unchecked") // damned generics ... sometimes do more harm than good
+   public Map fixture(String file, String ... ids) throws Exception {
       PreparedStatement stmt = null;
       String sql = null, table = null;
 
@@ -112,7 +121,8 @@ public class JTableTest {
       Iterator data_it, rows_it;
       String row_key, data_key;
 
-      Map rows=null, row_val;
+      Map rows=null;
+		Map row_val;
       Map.Entry row_entry;
       Object data_val;
       ArrayList fieldList = new ArrayList();
@@ -121,7 +131,13 @@ public class JTableTest {
       boolean first = true;
       int count, row_count;
 
+		Method filter = null;
+
 		Arrays.sort(ids);
+
+		if(fixture_filter_obj!=null && fixture_filter_meth!=null)
+			filter = fixture_filter_obj.getClass().getMethod(
+					   fixture_filter_meth, new Class[] {Object.class});
 
       try {
          File f = new File(file);
@@ -165,6 +181,13 @@ public class JTableTest {
             while(data_it.hasNext()){
                String field   = (String) data_it.next();
                data_val       = (Object) row_val.get(field);
+
+					// if there is a filter ...
+					if(filter!=null){
+						data_val = (Object) filter.invoke(fixture_filter_obj,data_val);
+						row_val.put(field,data_val);
+					}
+
                stmt.setObject(count,data_val);
                count++;
             }

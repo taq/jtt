@@ -9,6 +9,7 @@ public class SimpleTest {
 		JTableTest jt = new JTableTest("data.yml","sqlite");
 		Query query;
 
+		jt.fixture_filter(this,"filter");
 		jt.clean("customers");
 		Map customers = jt.fixture("customers.yml");
 		String beatle = "john";
@@ -30,6 +31,12 @@ public class SimpleTest {
 		customers = jt.fixture("customers.yml","john","paul");
 		query = jt.table("customers");
 		System.out.println("there are "+query.count()+" selected Beatles");
+	}
+
+	public Object filter(Object msg){
+		if(msg.equals("<%= today %>"))
+			return Calendar.getInstance().getTime().toString();
+		return msg;
 	}
 
 	public static void main(String args[]){
