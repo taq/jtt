@@ -62,17 +62,14 @@ public class Query {
 			meta	= rst.getMetaData();
 			ccnt	= meta.getColumnCount();
 
-         if(!rst.next()){
-				stmt.close();
-				rst.close();
-				return false;
-			}
-			data = new HashMap<String,Object>();
+         if(rst.next()){
+			   data = new HashMap<String,Object>();
 
-			for(int i=0; i<ccnt; i++){
-				cname = meta.getColumnName(i+1);
-				data.put(cname,rst.getObject(cname));
-			}
+			   for(int i=0; i<ccnt; i++){
+				   cname = meta.getColumnName(i+1);
+				   data.put(cname,rst.getObject(cname));
+			   }
+         }
 			rst.close();
 
 			// get the count - hey, cheaper and better than iteract on 
