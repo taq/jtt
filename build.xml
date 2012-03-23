@@ -6,6 +6,7 @@
 
    <path id="classpath">
       <pathelement location="jyaml.jar"/>
+      <pathelement location="junit4.jar"/>
       <pathelement location="sqlite.jar"/>
       <pathelement location="classes"/>
 		<pathelement path="${java.class.path}"/>

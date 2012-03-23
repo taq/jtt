@@ -10,6 +10,7 @@ public class JTableTest {
    private Connection con = null;
    private String cfg;
    private String id;
+   private String url, userName, password, driver;
    private Map con_info;
    private Map data;
    private ArrayList<String> fieldList;
@@ -37,13 +38,30 @@ public class JTableTest {
       if(con_info==null)
          throw new Exception("Id "+id+" not found.");
 
-      String userName = (String) con_info.get("username");
-      String password = (String) con_info.get("password");
-      String url      = (String) con_info.get("url");
-      Class.forName((String) con_info.get("driver")).newInstance ();
+      userName = (String) con_info.get("username");
+      password = (String) con_info.get("password");
+      url      = (String) con_info.get("url");
+      driver   = (String) con_info.get("driver");
+      Class.forName(driver).newInstance ();
       Connection c = DriverManager.getConnection (url, userName, password);
       con = c;
       return c;
+   }
+
+   public String getUrl() {
+      return url;
+   }
+
+   public String getUserName() {
+      return userName;
+   }
+
+   public String getPassword() {
+      return password;
+   }
+
+   public String getDriver() {
+      return driver;
    }
 
    public void clean(String ... tables) throws Exception {
