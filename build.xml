@@ -13,7 +13,7 @@
    </path>
 
 	<target name="build">
-		<javac srcdir="." verbose="${verbose}" destdir="${dst}" includes="*.java">
+		<javac srcdir="." verbose="${verbose}" destdir="${dst}" includes="*.java" includeantruntime="false">
          <classpath refid="classpath"/>
 			<compilerarg value="-Xlint:unchecked"/>
       </javac>

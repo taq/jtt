@@ -21,6 +21,15 @@ public class JTableTest {
       con = open(cfg,id);
    }
 
+   public JTableTest(String cfg, String id, ArrayList<String> cmds) throws Exception {
+      con = open(cfg,id);
+      for(String cmd : cmds) {
+         Statement stmt = con.createStatement();
+         stmt.execute(cmd);
+         stmt.close();
+      }
+   }
+
    public Connection open(String cfg, String id) throws Exception {
       if(con!=null)
          return con;
